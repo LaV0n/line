@@ -1,19 +1,27 @@
 import styles from './Main.module.scss'
 import {Coin} from "./Coin/Coin";
 import React, {useRef, useState} from 'react';
+import {AudioSource} from "../../constants/AudioSource";
+import arrow from '../../assets/image/right-arrow-svgrepo-com.svg'
 
 
 export const Main = () => {
 
     const dragItem: any = useRef();
     const dragDiv: any = useRef();
+    const initialCoins=[10, 20, 30, 40]
 
-    const [coins, setCoins] = useState([10, 20, 30, 40]);
+    const [coins, setCoins] = useState(initialCoins);
     const [panels, setPanels] = useState<number[]>([]);
+
+    const playAudio=(url:string)=>{
+        new Audio(url).play()
+    }
 
     const dragStart = (e: any) => {
         dragItem.current = e.target.innerHTML;
         console.log(e.target.innerHTML);
+        playAudio(AudioSource.coin)
     };
 
     const dragEnter = (e: any) => {
@@ -36,13 +44,30 @@ export const Main = () => {
 
     };
 
+    const resetGame=()=>{
+        setPanels([])
+        setCoins(initialCoins)
+    }
+    if(coins.length===0) playAudio(AudioSource.win)
+
     return (
         <div>
+            <div className={styles.background}></div>
+            {coins.length===0 &&
+                <div className={styles.winnerBlock}>
+                    You Are Winner
+                    <button onClick={resetGame}>try again</button>
+                </div>
+            }
             <div className={styles.container}>
                 <div className={styles.table} id='coins' onDragEnter={dragEnter}>
                     {coins.map(c=>
                         <Coin  key={c} dragStart={dragStart} coin={c} drop={drop}/>
                     )}
+                </div>
+                <div className={styles.direction}>
+                    Way Up
+                    <img src={arrow} className={styles.arrow} alt={'0'}/>
                 </div>
                 <div className={styles.panel} id='panel' onDragEnter={dragEnter} >
                     {panels.map((p)=>
