@@ -3,6 +3,7 @@ import {Coin} from "./Coin/Coin";
 import React, {useRef, useState} from 'react';
 import {AudioSource} from "../../constants/AudioSource";
 import arrow from '../../assets/image/right-arrow-svgrepo-com.svg'
+import {NavLink} from "react-router-dom";
 
 
 export const Main = () => {
@@ -56,7 +57,9 @@ export const Main = () => {
             {coins.length===0 &&
                 <div className={styles.winnerBlock}>
                     You Are Winner
-                    <button onClick={resetGame}>try again</button>
+                    <NavLink to={'/'}>
+                        <button onClick={resetGame}>try again</button>
+                    </NavLink>
                 </div>
             }
             <div className={styles.container}>
