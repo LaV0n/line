@@ -4,13 +4,16 @@ import React, {useRef, useState} from 'react';
 import {AudioSource} from "../../constants/AudioSource";
 import arrow from '../../assets/image/right-arrow-svgrepo-com.svg'
 import {NavLink} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../bll/store";
+import {resetInitialCoins} from "../../bll/gameReducer";
 
 
 export const Main = () => {
 
     const dragItem: any = useRef();
-    const dragDiv: any = useRef();
-    const initialCoins=[10, 20, 30, 40]
+    const dragDiv: any = useRef();                                                          //@ts-ignore
+    const initialCoins=useAppSelector<number[]>(state => state.game.initialCoins)
+    const dispatch=useAppDispatch()
 
     const [coins, setCoins] = useState(initialCoins);
     const [panels, setPanels] = useState<number[]>([]);
@@ -48,6 +51,7 @@ export const Main = () => {
     const resetGame=()=>{
         setPanels([])
         setCoins(initialCoins)
+        dispatch(resetInitialCoins())
     }
     if(coins.length===0) playAudio(AudioSource.win)
 

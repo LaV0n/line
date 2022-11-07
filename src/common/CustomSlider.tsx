@@ -33,7 +33,7 @@ export const CustomSlider = ({SetValue, max, min, isNumbers}: CustomSliderType) 
             label: '5',
         },
     ];
-    const kindOfItems = [
+     const kindOfItems = [
         {
             value: 1,
             label: 'A',

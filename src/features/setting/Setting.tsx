@@ -1,17 +1,23 @@
 import {NavLink} from "react-router-dom";
 import styles from './Setting.module.scss'
 import {CustomSlider} from "../../common/CustomSlider";
-import {useAppDispatch} from "../../bll/store";
+import {useAppDispatch, useAppSelector} from "../../bll/store";
+import { setDirection, setInitialCoins, setKindOfCoin, setValueOfNumbers} from "../../bll/gameReducer";
 
 export const Setting = () => {
 
     const dispatch=useAppDispatch()
+    const direction=useAppSelector(state => state.game.direction)
 
     const setValue = (value: any) => {
-        console.log(value.target.value)
+        dispatch(setValueOfNumbers({value:value.target.value}))
     }
     const setKindOfItems = (value: any) => {
-        console.log(value.target.value)
+        dispatch(setKindOfCoin({type:value.target.value}))
+    }
+
+    const startGame=()=>{
+        dispatch(setInitialCoins())
     }
 
     return (
@@ -28,16 +34,18 @@ export const Setting = () => {
                 <div className={styles.slider}>
                     Direction
                     <div className={styles.direction}>
-                        <button className={styles.directionButton} onClick={() => {
-                        }} disabled={true}>To Up
+                        <button className={styles.directionButton}
+                                onClick={() => {dispatch(setDirection({direction:'down'}))}}
+                                disabled={direction==='down'}>To Up
                         </button>
-                        <button className={styles.directionButton} onClick={() => {
-                        }}>To Down
+                        <button className={styles.directionButton}
+                                onClick={() => {dispatch(setDirection({direction:'up'}))}}
+                                disabled={direction==='up'}>To Down
                         </button>
                     </div>
                 </div>
                 <NavLink to={'/game'} style={{textDecoration:"none"}}>
-                    <button className={styles.gameButton}>
+                    <button className={styles.gameButton} onClick={startGame}>
                         Start Game
                     </button>
                 </NavLink>
