@@ -103,10 +103,11 @@ export const Main = () => {
                     {panels.map((p) =>
                         <Coin coin={p} key={p}/>
                     )}
+                    <div className={styles.panelWithHole}>
+                        {[...Array(numberOfItem)].map(p => <div className={styles.hole} key={p}></div>)}
+                    </div>
                 </div>
-                <div className={styles.panelWithHole}>
-                    {[...Array(numberOfItem)].map(p => <div className={styles.hole} key={p}></div>)}
-                </div>
+
 
             </div>
         </div>

@@ -56,7 +56,7 @@ const slice = createSlice({
                 }
             }else {
                 while(state.numberOfItem!==state.initialCoins.length){
-                    let newLetter =(Math.floor(Math.random() *  state.kindOfCoin)+9).toString(36)
+                    let newLetter =String.fromCharCode(Math.floor(Math.random() *  state.kindOfCoin) + 97)
                     if(state.initialCoins.indexOf(newLetter) === -1){
                         state.initialCoins.push(newLetter)
                     }
