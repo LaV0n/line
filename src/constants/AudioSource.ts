@@ -14,6 +14,7 @@ export const playAudio = (url: string) => {
 
 const audioSourse=new Audio(AudioSource.background)
 audioSourse.volume=0.03
+audioSourse.loop=true
 export const audioBackground= {
     pause(){
         audioSourse.pause()

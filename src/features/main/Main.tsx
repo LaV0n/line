@@ -70,7 +70,7 @@ export const Main = () => {
     useEffect(() => {
         setBackgroundImage(Math.random() < 0.5 ? background3 : background2)
         audioBackground.start()
-    }, [])
+    },[])
 
     return (
         <div>
