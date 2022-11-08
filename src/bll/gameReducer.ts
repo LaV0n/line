@@ -6,7 +6,7 @@ type InitialCoinsType= number
 
 const initialState = {
     numberOfItem: 2,
-    kindOfCoin: 9 as KindOfCoinType,
+    kindOfCoin: 26 as KindOfCoinType,
     direction: 'up' as DirectionType,
     initialCoins:[] as InitialCoinsType[]
 }
@@ -56,6 +56,8 @@ const slice = createSlice({
         },
         resetInitialCoins(state){
             state.initialCoins=[]
+            state.kindOfCoin=26
+            state.numberOfItem=2
         }
     }
 })

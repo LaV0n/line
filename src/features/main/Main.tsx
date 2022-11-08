@@ -12,13 +12,14 @@ export const Main = () => {
 
     const dragItem: any = useRef();
     const dragDiv: any = useRef();                                                          //@ts-ignore
-    const initialCoins=useAppSelector<number[]>(state => state.game.initialCoins)
-    const dispatch=useAppDispatch()
+    const initialCoins = useAppSelector<number[]>(state => state.game.initialCoins)
+    const dispatch = useAppDispatch()
+    const direction = useAppSelector(state => state.game.direction)
 
     const [coins, setCoins] = useState(initialCoins);
     const [panels, setPanels] = useState<number[]>([]);
 
-    const playAudio=(url:string)=>{
+    const playAudio = (url: string) => {
         new Audio(url).play()
     }
 
@@ -37,9 +38,10 @@ export const Main = () => {
 
         let itemIndex: number | null = coins.findIndex(f => f === +dragItem.current)
 
-        const condition= ( (panels.length===0 && (Math.min(...coins)===+dragItem.current)) ? true : dragItem.current>panels[panels.length-1] )
+        const conditionUp = (Math.min(...coins) === +dragItem.current) && (panels.length === 0  ? true : dragItem.current > panels[panels.length - 1])
+        const conditionDown = (Math.max(...coins) === +dragItem.current) && (panels.length === 0  ? true : dragItem.current < panels[panels.length - 1])
 
-        if (itemIndex !== -1 && dragDiv.current === 'panel'  && condition &&  (Math.min(...coins)===+dragItem.current) ){
+        if (itemIndex !== -1 && dragDiv.current === 'panel' && (direction==='up'?conditionUp:conditionDown) ) {
             let dragItemContent = coins[itemIndex];
             setCoins(coins.filter(u => u !== dragItemContent))
             setPanels([...panels, dragItemContent])
@@ -48,17 +50,17 @@ export const Main = () => {
 
     };
 
-    const resetGame=()=>{
+    const resetGame = () => {
         setPanels([])
         setCoins(initialCoins)
         dispatch(resetInitialCoins())
     }
-    if(coins.length===0) playAudio(AudioSource.win)
+    if (coins.length === 0) playAudio(AudioSource.win)
 
     return (
         <div>
             <div className={styles.background}></div>
-            {coins.length===0 &&
+            {coins.length === 0 &&
                 <div className={styles.winnerBlock}>
                     You Are Winner
                     <NavLink to={'/'}>
@@ -68,17 +70,23 @@ export const Main = () => {
             }
             <div className={styles.container}>
                 <div className={styles.table} id='coins' onDragEnter={dragEnter}>
-                    {coins.map(c=>
-                        <Coin  key={c} dragStart={dragStart} coin={c} drop={drop}/>
+                    {coins.map(c =>
+                        <Coin key={c} dragStart={dragStart} coin={c} drop={drop}/>
                     )}
                 </div>
-                <div className={styles.direction}>
-                    Way Up
-                    <img src={arrow} className={styles.arrow} alt={'0'}/>
-                </div>
-                <div className={styles.panel} id='panel' onDragEnter={dragEnter} >
-                    {panels.map((p)=>
-                       <Coin coin={p} key={p}/>
+                    {direction === 'up'
+                        ? <div className={styles.direction}>
+                            <span>Way Up</span>
+                            <img src={arrow} className={styles.arrow} alt={'0'}/>
+                        </div>
+                        : <div className={styles.direction}>
+                            <span>Way Down</span>
+                            <img src={arrow} className={styles.arrow} alt={'0'} style={{transform:'rotate(0.5turn)'}}/>
+                        </div>
+                    }
+                <div className={styles.panel} id='panel' onDragEnter={dragEnter}>
+                    {panels.map((p) =>
+                        <Coin coin={p} key={p}/>
                     )}
                 </div>
             </div>
