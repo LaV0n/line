@@ -11,13 +11,14 @@ import {resetInitialCoins} from "../../bll/gameReducer";
 export const Main = () => {
 
     const dragItem: any = useRef();
-    const dragDiv: any = useRef();                                                          //@ts-ignore
-    const initialCoins = useAppSelector<number[]>(state => state.game.initialCoins)
+    const dragDiv: any = useRef();
+    const initialCoins = useAppSelector<any[]>(state => state.game.initialCoins)
     const dispatch = useAppDispatch()
     const direction = useAppSelector(state => state.game.direction)
+    const kindOfCoin=useAppSelector(state => state.game.kindOfCoin)
 
     const [coins, setCoins] = useState(initialCoins);
-    const [panels, setPanels] = useState<number[]>([]);
+    const [panels, setPanels] = useState<number[] |string[]>([]);
 
     const playAudio = (url: string) => {
         new Audio(url).play()
@@ -36,18 +37,25 @@ export const Main = () => {
 
     const drop = () => {
 
-        let itemIndex: number | null = coins.findIndex(f => f === +dragItem.current)
+        let itemIndex: number | null=0
+        let conditionUp
+        let conditionDown
+        if(kindOfCoin!==26){
+            itemIndex = coins.findIndex(f => f === +dragItem.current)
+             conditionUp = (Math.min(...coins ) === +dragItem.current) && (panels.length === 0  ? true : dragItem.current > panels[panels.length - 1])
+             conditionDown = (Math.max(...coins) === +dragItem.current) && (panels.length === 0  ? true : dragItem.current < panels[panels.length - 1])
+        }else{
+            itemIndex = coins.findIndex(f => f === dragItem.current)
+            conditionUp = (Math.min(...coins.map(c=>c.charCodeAt(0) - 97)) === dragItem.current.charCodeAt(0) - 97) && (panels.length === 0  ? true : dragItem.current > panels[panels.length - 1])
+            conditionDown = (Math.max(...coins.map(c=>c.charCodeAt(0) - 97)) === dragItem.current.charCodeAt(0) - 97) && (panels.length === 0  ? true : dragItem.current < panels[panels.length - 1])
+        }
 
-        const conditionUp = (Math.min(...coins) === +dragItem.current) && (panels.length === 0  ? true : dragItem.current > panels[panels.length - 1])
-        const conditionDown = (Math.max(...coins) === +dragItem.current) && (panels.length === 0  ? true : dragItem.current < panels[panels.length - 1])
-
-        if (itemIndex !== -1 && dragDiv.current === 'panel' && (direction==='up'?conditionUp:conditionDown) ) {
+        if (itemIndex !== -1 && dragDiv.current === 'panel' && (direction==='up'? conditionUp : conditionDown) ) {
             let dragItemContent = coins[itemIndex];
             setCoins(coins.filter(u => u !== dragItemContent))
             setPanels([...panels, dragItemContent])
             itemIndex = null;
         }
-
     };
 
     const resetGame = () => {

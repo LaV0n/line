@@ -1,7 +1,7 @@
 import styles from './Coin.module.scss'
 
 type CoinProps={
-    coin:number
+    coin:number | string
     dragStart?:(e:any)=>void
     drop?:(e:any)=>void
 }

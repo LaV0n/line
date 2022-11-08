@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export type KindOfCoinType= 26 | 9 | 19 | 50 | 99 | 999
 type DirectionType= 'up' | 'down'
-type InitialCoinsType= number
+type InitialCoinsType= number | string
 
 const initialState = {
     numberOfItem: 2,
@@ -47,12 +47,22 @@ const slice = createSlice({
 
         },
         setInitialCoins(state){
-            while(state.numberOfItem!==state.initialCoins.length){
-                let newNumber =Math.floor(Math.random() *  state.kindOfCoin)
-                if(state.initialCoins.indexOf(newNumber) === -1){
-                    state.initialCoins.push(newNumber)
+            if(state.kindOfCoin!==26){
+                while(state.numberOfItem!==state.initialCoins.length){
+                    let newNumber =Math.floor(Math.random() *  state.kindOfCoin)
+                    if(state.initialCoins.indexOf(newNumber) === -1){
+                        state.initialCoins.push(newNumber)
+                    }
+                }
+            }else {
+                while(state.numberOfItem!==state.initialCoins.length){
+                    let newLetter =(Math.floor(Math.random() *  state.kindOfCoin)+9).toString(36)
+                    if(state.initialCoins.indexOf(newLetter) === -1){
+                        state.initialCoins.push(newLetter)
+                    }
                 }
             }
+
         },
         resetInitialCoins(state){
             state.initialCoins=[]
