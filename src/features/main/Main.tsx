@@ -1,7 +1,7 @@
 import styles from './Main.module.scss'
 import {Coin} from "./Coin/Coin";
 import React, {useEffect, useRef, useState} from 'react';
-import {AudioSource, playAudio} from "../../constants/AudioSource";
+import {audioBackground, AudioSource, playAudio} from "../../constants/AudioSource";
 import arrow from '../../assets/image/right-arrow-svgrepo-com.svg'
 import {NavLink} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../bll/store";
@@ -62,10 +62,14 @@ export const Main = () => {
         setCoins(initialCoins)
         dispatch(resetInitialCoins())
     }
-    if (coins.length === 0) playAudio(AudioSource.win)
+    if (coins.length === 0) {
+        playAudio(AudioSource.win)
+        audioBackground.pause()
+    }
 
     useEffect(() => {
         setBackgroundImage(Math.random() < 0.5 ? background3 : background2)
+        audioBackground.start()
     }, [])
 
     return (
