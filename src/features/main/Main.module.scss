@@ -1,5 +1,4 @@
 .background {
-  background-image: url("../../assets/image/background3.jpg");
   filter: blur(2px);
   width: 100vw;
   height: 100vh;
@@ -14,6 +13,8 @@
   border-radius: 30px;
   background-color: rgba(240, 248, 255, 0.61);
   position: absolute;
+  font-weight: bold;
+  font-size: 24px;
   top: 200px;
   left: 40%;
   display: flex;
@@ -40,10 +41,13 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+    font-size: 24px;
+    font-weight: bold;
     gap: 20px;
-   .arrow{
-     height: 50px;
-   }
+
+    .arrow {
+      height: 50px;
+    }
   }
 
   .panel {
@@ -52,15 +56,28 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 20px;
-    background-image: url("../../assets/image/pannel.jpg");
+    gap: 30px;
     border-radius: 40px;
+  }
+}
 
-    .hole {
-      width: 150px;
-      height: 150px;
-      border-radius: 75px;
-      border: 1px solid black;
-    }
+.panelWithHole {
+  position: absolute;
+  bottom: 48px;
+  width: 80vw;
+  height: 30%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 18px;
+  background-image: url("../../assets/image/pannel.jpg");
+  z-index: -1;
+  border-radius: 40px;
+
+  .hole {
+    width: 140px;
+    height: 140px;
+    border-radius: 75px;
+    border: 5px solid rgba(255, 255, 255, 0.24);
   }
 }
